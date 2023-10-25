@@ -10,13 +10,12 @@ import Textarea from "../../ui/Textarea";
 import { createCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 
-
 function CreateCabinForm() {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, status } = useMutation({
     mutationFn: createCabin,
     onSuccess: () => {
       toast.success("Cabin created");
@@ -29,21 +28,23 @@ function CreateCabinForm() {
   });
 
   function onSubmit(data) {
-    mutate(data);
-  }
-  function onError(errors) {
-    console.log(errors);
+    mutate({...data , image : data.image[0]});
   }
 
+  console.log(status)
+  if(status !== "idle" && status !== "success") return <h1>Loading...</h1>
+
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
-      <FormRow label={"Cabin Name"} error={errors?.name?.message}><Input
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRow label={"Cabin Name"} error={errors?.name?.message}>
+        <Input
           type="text"
           id="name"
           {...register("name", {
             required: "This field is required",
           })}
-        /></FormRow>
+        />
+      </FormRow>
 
       <FormRow label={"Maximum Capacity"} error={errors?.maxCapacity?.message}>
         <Input
@@ -95,14 +96,20 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label={"Cabin Photo"}>
-        <FileInput id="image" accept="image/*" />
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register("image", {
+            required: "This field is required",
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button disabled={isLoading}>Add cabin</Button>
+        <Button>Add cabin</Button>
       </FormRow>
     </Form>
   );
