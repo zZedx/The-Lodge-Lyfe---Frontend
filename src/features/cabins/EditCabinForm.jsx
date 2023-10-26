@@ -99,7 +99,17 @@ function EditCabinForm({ cabin, setActive }) {
       </FormRow>
 
       <FormRow label={"Cabin Photo"}>
-        <FileInput id="image" accept="image/*" {...register("image")} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register("image", {
+            validate: (fileData) => {
+              if (typeof fileData === "string" || fileData?.length === 1)
+                return true;
+              return "File is required";
+            },
+          })}
+        />
       </FormRow>
 
       <FormRow>
