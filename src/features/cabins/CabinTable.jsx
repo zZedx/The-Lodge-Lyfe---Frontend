@@ -2,6 +2,7 @@ import Spinner from "../../ui/Spinner";
 import styled from "styled-components";
 import CabinRow from "./CabinRow";
 import useCabins from "./useCabins";
+import ServerError from "../../ui/ServerError";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -31,7 +32,7 @@ const TableHeader = styled.header`
 const CabinTable = () => {
   const { isLoading ,cabins, isError } = useCabins();
 
-  if (isError) return <h1>Error fetching Data</h1>;
+  if (isError) return <ServerError/>;
   if (isLoading) return <Spinner />;
 
   return (
