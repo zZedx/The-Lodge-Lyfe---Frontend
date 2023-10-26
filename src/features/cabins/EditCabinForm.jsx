@@ -7,29 +7,31 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createCabin } from "../../services/apiCabins";
+import { createCabin, editCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
 
-function CreateCabinForm() {
+function EditCabinForm({cabin}) { 
   const queryClient = useQueryClient();
-  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { register, handleSubmit, reset, getValues, formState } = useForm({
+    defaultValues : cabin
+  });
   const { errors } = formState;
 
   const { mutate, status } = useMutation({
-    mutationFn: createCabin,
+    mutationFn: editCabin,
     onSuccess: () => {
-      toast.success("Cabin created");
+      toast.success("Cabin Edited");
       reset();
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
-    onError: () => {
-      toast.error("Something went wrong");
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
   function onSubmit(data) {
-    mutate({...data , image : data.image[0]});
+    mutate(data);
   }
 
   if(status === "pending") return <Spinner/>
@@ -99,9 +101,7 @@ function CreateCabinForm() {
         <FileInput
           id="image"
           accept="image/*"
-          {...register("image", {
-            required: "This field is required",
-          })}
+          {...register("image")}
         />
       </FormRow>
 
@@ -109,10 +109,10 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Add cabin</Button>
+        <Button>Edit cabin</Button>
       </FormRow>
     </Form>
   );
 }
 
-export default CreateCabinForm;
+export default EditCabinForm;
