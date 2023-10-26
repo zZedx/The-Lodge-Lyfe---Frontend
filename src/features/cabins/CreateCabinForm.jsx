@@ -9,6 +9,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import { createCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
+import Spinner from "../../ui/Spinner";
 
 function CreateCabinForm() {
   const queryClient = useQueryClient();
@@ -32,7 +33,7 @@ function CreateCabinForm() {
   }
 
   console.log(status)
-  if(status !== "idle" && status !== "success") return <h1>Loading...</h1>
+  if(status === "pending") return <Spinner/>
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

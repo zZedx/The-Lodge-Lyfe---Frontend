@@ -43,7 +43,7 @@ const Discount = styled.div`
 `;
 
 const CabinRow = ({ cabin }) => {
-  const { image, name, maxCapacity, regularPrice, discount, id : cabinId } = cabin;
+  const { image, name, maxCapacity, regularPrice, discount, _id : cabinId } = cabin;
 
   const queryClient = useQueryClient()
 

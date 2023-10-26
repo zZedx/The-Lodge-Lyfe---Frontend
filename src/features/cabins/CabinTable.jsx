@@ -34,11 +34,13 @@ const CabinTable = () => {
   const {
     isLoading,
     data: cabins,
-    error,
+    isError,
   } = useQuery({
     queryKey: ["cabins"],
-    queryFn: getAllCabins,
+    queryFn: getAllCabins
   });
+
+  if(isError) return <h1>Error fetching Data</h1>
 
   if (isLoading) return <Spinner />;
   return (
@@ -51,7 +53,7 @@ const CabinTable = () => {
         <div>Discount</div>
         <div></div>
       </TableHeader>
-      {cabins.map(cabin => <CabinRow cabin={cabin} key={cabin.id}/>)}
+      {cabins.map(cabin => <CabinRow cabin={cabin} key={cabin._id}/>)}
     </Table>
   );
 };
