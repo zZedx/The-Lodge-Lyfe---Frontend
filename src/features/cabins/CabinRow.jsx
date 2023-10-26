@@ -4,7 +4,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCabin } from "../../services/apiCabins";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import CreateCabinForm from "./CreateCabinForm";
 import EditCabinForm from "./EditCabinForm";
 
 const TableRow = styled.div`
@@ -80,7 +79,7 @@ const CabinRow = ({ cabin }) => {
       <button onClick={() => mutate(cabinId)} disabled={isLoading}>Delete</button>
       </div>
     </TableRow>
-    {active && <EditCabinForm cabin = {cabin}/>}
+    {active && <EditCabinForm cabin = {cabin} setActive={setActive}/>}
     </>
   );
 };

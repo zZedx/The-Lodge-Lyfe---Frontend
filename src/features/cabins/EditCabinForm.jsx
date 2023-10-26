@@ -7,14 +7,14 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createCabin, editCabin } from "../../services/apiCabins";
+import { editCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
 
-function EditCabinForm({cabin}) { 
+function EditCabinForm({ cabin, setActive }) {
   const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } = useForm({
-    defaultValues : cabin
+    defaultValues: cabin,
   });
   const { errors } = formState;
 
@@ -23,18 +23,19 @@ function EditCabinForm({cabin}) {
     onSuccess: () => {
       toast.success("Cabin Edited");
       reset();
+      setActive(false);
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error);
     },
   });
 
   function onSubmit(data) {
-    mutate(data);
+    mutate(data); //{...data , image : data.image[0]}
   }
 
-  if(status === "pending") return <Spinner/>
+  if (status === "pending") return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -98,11 +99,7 @@ function EditCabinForm({cabin}) {
       </FormRow>
 
       <FormRow label={"Cabin Photo"}>
-        <FileInput
-          id="image"
-          accept="image/*"
-          {...register("image")}
-        />
+        <FileInput id="image" accept="image/*" {...register("image")} />
       </FormRow>
 
       <FormRow>
