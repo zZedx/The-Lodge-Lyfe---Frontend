@@ -37,8 +37,8 @@ const API_URL = "http://localhost:3000";
 export async function getAllCabins() {
   const res = await fetch(API_URL + "/cabins");
   const data = await res.json();
-  if(!res.ok){
-    throw new Error("Error fetching data")
+  if (!res.ok) {
+    throw new Error("Error fetching data");
   }
   return data;
 }
@@ -56,8 +56,8 @@ export async function createCabin(cabin) {
     method: "POST",
     body: newCabin,
   });
-  if(!res.ok){
-    throw new Error("Cabin could not be Created")
+  if (!res.ok) {
+    throw new Error("Cabin could not be Created");
   }
 }
 
@@ -65,25 +65,32 @@ export async function deleteCabin(id) {
   const res = await fetch(API_URL + "/deleteCabin", {
     method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({id}),
+    body: JSON.stringify({ id }),
   });
-  if(!res.ok){
-    throw new Error("Cabin could not be deleted")
+  if (!res.ok) {
+    throw new Error("Cabin could not be deleted");
   }
 }
 
-export async function editCabin(cabin){
+export async function editCabin(cabin) {
+  const hasImagePath = cabin.image?.startsWith?.("https://res.cloudinary.com");
+  const newCabin = new FormData();
+  newCabin.append("image", hasImagePath ? cabin.image : cabin.image[0]);
+  newCabin.append("name", cabin.name);
+  newCabin.append("maxCapacity", cabin.maxCapacity);
+  newCabin.append("regularPrice", cabin.regularPrice);
+  newCabin.append("discount", cabin.discount);
+  newCabin.append("description", cabin.description);
+  newCabin.append("imageName", cabin.imageName);
+  newCabin.append("_id", cabin._id);
 
   const res = await fetch(API_URL + "/editCabin", {
     method: "PUT",
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(cabin),
+    body: newCabin,
   });
-  if(!res.ok){
-    throw new Error("Cabin could not be Edited")
+  if (!res.ok) {
+    throw new Error("Cabin could not be Edited");
   }
 }
