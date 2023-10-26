@@ -73,3 +73,17 @@ export async function deleteCabin(id) {
     throw new Error("Cabin could not be deleted")
   }
 }
+
+export async function editCabin(cabin){
+
+  const res = await fetch(API_URL + "/editCabin", {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(cabin),
+  });
+  if(!res.ok){
+    throw new Error("Cabin could not be Edited")
+  }
+}
