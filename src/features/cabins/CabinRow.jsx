@@ -4,6 +4,8 @@ import styled from "styled-components";
 import EditCabinForm from "./EditCabinForm";
 import { formatCurrency } from "../../utils/helpers";
 import { useDeleteCabin } from "./useDeleteCabin";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import { useCreateCabin } from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -44,28 +46,50 @@ const Discount = styled.div`
 `;
 
 const CabinRow = ({ cabin }) => {
-  const { image, name, maxCapacity, regularPrice, discount, _id : cabinId } = cabin;
-  const [active , setActive] = useState(false)
+  const [active, setActive] = useState(false);
+  const { status : deleteStatus, deleteCabin } = useDeleteCabin();
+  const {status : createStatus  , createCabin} = useCreateCabin()
 
-  const {isDeleting , deleteCabin} = useDeleteCabin()
+  const {
+    image,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    description,
+    imageName , 
+    _id: cabinId,
+  } = cabin;
+
+  function handleDuplicate(){
+    createCabin({name : `copy of ${name}` , image , imageName , maxCapacity , regularPrice , discount , description })
+  }
 
   return (
-    <><TableRow role="row">
-      <Img src={image} alt="" />
-      <Cabin>{name}</Cabin>
-      <div>Fits up to {maxCapacity}</div>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      {discount ? (
-        <Discount>{formatCurrency(discount)}</Discount>
-      ) : (
-        <span>&mdash;</span>
-      )}
-      <div>
-      <button onClick={() => setActive(e => !e)} >Edit</button>
-      <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>Delete</button>
-      </div>
-    </TableRow>
-    {active && <EditCabinForm cabin = {cabin} setActive={setActive}/>}
+    <>
+      <TableRow role="row">
+        <Img src={image} alt="" />
+        <Cabin>{name}</Cabin>
+        <div>Fits up to {maxCapacity}</div>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        {discount ? (
+          <Discount>{formatCurrency(discount)}</Discount>
+        ) : (
+          <span>&mdash;</span>
+        )}
+        <div>
+          <button onClick={handleDuplicate} disabled={createStatus === "pending"}>
+            <HiSquare2Stack />
+          </button>
+          <button onClick={() => setActive((e) => !e)}>
+            <HiPencil />
+          </button>
+          <button onClick={() => deleteCabin(cabinId)} disabled={deleteStatus === "pending"}>
+            <HiTrash />
+          </button>
+        </div>
+      </TableRow>
+      {active && <EditCabinForm cabin={cabin} setActive={setActive} />}
     </>
   );
 };

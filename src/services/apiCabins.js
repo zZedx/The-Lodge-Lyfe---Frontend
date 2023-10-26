@@ -44,13 +44,15 @@ export async function getAllCabins() {
 }
 
 export async function createCabin(cabin) {
+  const hasImagePath = cabin.image?.startsWith?.("https://res.cloudinary.com");
   const newCabin = new FormData();
-  newCabin.append("image", cabin.image);
+  newCabin.append("image", hasImagePath ? cabin.image : cabin.image[0]);
   newCabin.append("name", cabin.name);
   newCabin.append("maxCapacity", cabin.maxCapacity);
   newCabin.append("regularPrice", cabin.regularPrice);
   newCabin.append("discount", cabin.discount);
   newCabin.append("description", cabin.description);
+  hasImagePath && newCabin.append("imageName", cabin.imageName);
 
   const res = await fetch(API_URL + "/createCabin", {
     method: "POST",
