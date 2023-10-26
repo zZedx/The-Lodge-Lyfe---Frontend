@@ -1,38 +1,29 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { editCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
+import useEditCabin from "./useEditCabin";
 
 function EditCabinForm({ cabin, setActive }) {
-  const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: cabin,
   });
   const { errors } = formState;
 
-  const { mutate, status } = useMutation({
-    mutationFn: editCabin,
-    onSuccess: () => {
-      toast.success("Cabin Edited");
-      reset();
-      setActive(false);
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-    },
-    onError: (error) => {
-      toast.error(error);
-    },
-  });
+  const { editCabin, status } = useEditCabin()
 
   function onSubmit(data) {
-    mutate(data); //{...data , image : data.image[0]}
+    editCabin(data, {
+      onSuccess: () => {
+        reset();
+        setActive(false);
+      },
+    }); //{...data , image : data.image[0]}
   }
 
   if (status === "pending") return <Spinner />;
