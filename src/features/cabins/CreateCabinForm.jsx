@@ -1,38 +1,28 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
+import { useCreateCabin } from "./useCreateCabin";
 
 function CreateCabinForm() {
-  const queryClient = useQueryClient();
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
 
-  const { mutate, status } = useMutation({
-    mutationFn: createCabin,
-    onSuccess: () => {
-      toast.success("Cabin created");
-      reset();
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
-    },
-    onError: () => {
-      toast.error("Something went wrong");
-    },
-  });
+  const { createCabin, status } = useCreateCabin();
 
   function onSubmit(data) {
-    mutate({...data , image : data.image[0]});
+    createCabin(
+      { ...data, image: data.image[0] },
+      { onSuccess: () => reset() }
+    );
   }
 
-  if(status === "pending") return <Spinner/>
+  if (status === "pending") return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
