@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import EditCabinForm from "./EditCabinForm";
@@ -6,6 +5,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { useDeleteCabin } from "./useDeleteCabin";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import { useCreateCabin } from "./useCreateCabin";
+import Modal from "../../ui/Modal";
 
 const TableRow = styled.div`
   display: grid;
@@ -46,9 +46,8 @@ const Discount = styled.div`
 `;
 
 const CabinRow = ({ cabin }) => {
-  const [active, setActive] = useState(false);
-  const { status : deleteStatus, deleteCabin } = useDeleteCabin();
-  const {status : createStatus  , createCabin} = useCreateCabin()
+  const { status: deleteStatus, deleteCabin } = useDeleteCabin();
+  const { status: createStatus, createCabin } = useCreateCabin();
 
   const {
     image,
@@ -57,12 +56,20 @@ const CabinRow = ({ cabin }) => {
     regularPrice,
     discount,
     description,
-    imageName , 
+    imageName,
     _id: cabinId,
   } = cabin;
 
-  function handleDuplicate(){
-    createCabin({name : `copy of ${name}` , image , imageName , maxCapacity , regularPrice , discount , description })
+  function handleDuplicate() {
+    createCabin({
+      name: `copy of ${name}`,
+      image,
+      imageName,
+      maxCapacity,
+      regularPrice,
+      discount,
+      description,
+    });
   }
 
   return (
@@ -78,18 +85,31 @@ const CabinRow = ({ cabin }) => {
           <span>&mdash;</span>
         )}
         <div>
-          <button onClick={handleDuplicate} disabled={createStatus === "pending"}>
+          <button
+            onClick={handleDuplicate}
+            disabled={createStatus === "pending"}
+          >
             <HiSquare2Stack />
           </button>
-          <button onClick={() => setActive((e) => !e)}>
-            <HiPencil />
-          </button>
-          <button onClick={() => deleteCabin(cabinId)} disabled={deleteStatus === "pending"}>
-            <HiTrash />
-          </button>
+
+          <Modal>
+            <Modal.Open opens={"editForm"}>
+              <button >
+                <HiPencil />
+              </button>
+            </Modal.Open>
+            <Modal.Window name={"editForm"}>
+              <EditCabinForm cabin={cabin} />
+            </Modal.Window>
+            <button
+              onClick={() => deleteCabin(cabinId)}
+              disabled={deleteStatus === "pending"}
+            >
+              <HiTrash />
+            </button>
+          </Modal>
         </div>
       </TableRow>
-      {active && <EditCabinForm cabin={cabin} setActive={setActive} />}
     </>
   );
 };
