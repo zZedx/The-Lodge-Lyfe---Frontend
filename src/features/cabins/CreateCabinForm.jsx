@@ -27,11 +27,11 @@ function CreateCabinForm({ onCloseModal }) {
     );
   }
 
-  if (status === "pending") return <Spinner />;
+  // if (status === "pending") return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} type= {onCloseModal ? 'modal' : 'regular'}>
-      <FormRow label={"Cabin Name"} error={errors?.name?.message}>
+      {status === "pending" ? <Spinner /> : <><FormRow label={"Cabin Name"} error={errors?.name?.message}>
         <Input
           type="text"
           id="name"
@@ -109,7 +109,7 @@ function CreateCabinForm({ onCloseModal }) {
           Cancel
         </Button>
         <Button>Add cabin</Button>
-      </FormRow>
+      </FormRow></>}
     </Form>
   );
 }
