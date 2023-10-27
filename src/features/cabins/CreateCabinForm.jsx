@@ -9,7 +9,7 @@ import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
 import { useCreateCabin } from "./useCreateCabin";
 
-function CreateCabinForm() {
+function CreateCabinForm({ onCloseModal }) {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
 
@@ -18,14 +18,19 @@ function CreateCabinForm() {
   function onSubmit(data) {
     createCabin(
       { ...data, image: data.image[0] },
-      { onSuccess: () => reset() }
+      {
+        onSuccess: () => {
+          reset();
+          onCloseModal?.();
+        },
+      }
     );
   }
 
   if (status === "pending") return <Spinner />;
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} type= {onCloseModal ? 'modal' : 'regular'}>
       <FormRow label={"Cabin Name"} error={errors?.name?.message}>
         <Input
           type="text"
@@ -96,7 +101,11 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button>Add cabin</Button>
