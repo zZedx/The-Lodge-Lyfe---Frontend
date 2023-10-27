@@ -25,6 +25,7 @@ const Overlay = styled.div`
   backdrop-filter: blur(4px);
   z-index: 1000;
   transition: all 0.5s;
+  background-color: rgba(0, 0, 0 , 0.2);
 `;
 
 const Button = styled.button`
@@ -76,8 +77,8 @@ function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
   if (name !== openName) return null;
   return createPortal(
-    <Overlay>
-      <StyledModal>
+    <Overlay onClick={close}>
+      <StyledModal onClick={(e) => e.stopPropagation()}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
