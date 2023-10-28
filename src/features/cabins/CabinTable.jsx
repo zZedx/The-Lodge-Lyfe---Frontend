@@ -3,16 +3,7 @@ import styled from "styled-components";
 import CabinRow from "./CabinRow";
 import useCabins from "./useCabins";
 import ServerError from "../../ui/ServerError";
-
-const Table = styled.div`
-  border: 1px solid var(--color-grey-200);
-
-  font-size: 1.4rem;
-  background-color: var(--color-grey-0);
-  border-radius: 7px;
-  overflow: hidden;
-  width: 100%;
-`;
+import Table from "../../ui/Table";
 
 const TableHeader = styled.header`
   display: grid;
@@ -30,24 +21,25 @@ const TableHeader = styled.header`
 `;
 
 const CabinTable = () => {
-  const { isLoading ,cabins = [], isError } = useCabins();
+  const { isLoading, cabins = [], isError } = useCabins();
 
-  if (isError) return <ServerError/>;
+  if (isError) return <ServerError />;
   if (isLoading) return <Spinner />;
 
   return (
-    <Table role="table">
-      <TableHeader role="row">
+    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table.Header>
         <div></div>
         <div>Cabin</div>
         <div>Capacity</div>
         <div>Price</div>
         <div>Discount</div>
         <div></div>
-      </TableHeader>
-      {cabins.map((cabin) => (
-        <CabinRow cabin={cabin} key={cabin._id} />
-      ))}
+      </Table.Header>
+      <Table.Body data={cabins} render={(cabin) => (
+          <CabinRow cabin={cabin} key={cabin._id} />
+        )}>
+      </Table.Body>
     </Table>
   );
 };
