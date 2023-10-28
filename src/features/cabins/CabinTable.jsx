@@ -30,7 +30,7 @@ const TableHeader = styled.header`
 `;
 
 const CabinTable = () => {
-  const { isLoading ,cabins, isError } = useCabins();
+  const { isLoading ,cabins = [], isError } = useCabins();
 
   if (isError) return <ServerError/>;
   if (isLoading) return <Spinner />;
