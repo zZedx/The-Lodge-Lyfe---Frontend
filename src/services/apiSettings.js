@@ -10,7 +10,7 @@ export async function getSettings(){
 }
 
 export async function updateSettings(setting){
-    const res = await fetch(apiUrl + "/updateSettings", {
+    const res = await fetch(apiUrl + "/settings/update", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
