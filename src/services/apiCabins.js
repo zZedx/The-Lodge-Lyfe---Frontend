@@ -1,7 +1,5 @@
 const apiUrl = import.meta.env.VITE_API_URL;
 
-/* ************************************* Mongo DB  ********************************* */
-
 export async function getAllCabins() {
   const res = await fetch(apiUrl + "/cabins");
   const data = await res.json();
@@ -65,39 +63,3 @@ export async function editCabin(cabin) {
     throw new Error("Cabin could not be Edited");
   }
 }
-
-
-
-
-
-// export async function getAllCabins() {
-//   const { data, error } = await supabase.from("cabins").select("*");
-
-//   if (error) {
-//     console.error(error);
-//     throw new Error("Cabins could not be loaded");
-//   }
-//   return data;
-// }
-
-// export async function createCabin(cabin) {
-//   const imageName = `${Math.random()}-${cabin.image.name}`.replaceAll("/", "");
-//   const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-//   const { data ,error } = await supabase
-//     .from("cabins")
-//     .insert([{ ...cabin, image: imagePath }])
-//     .select();
-//   if (error) {
-//     console.error(error);
-//     throw new Error("Cabin could not be Created");
-//   }
-
-//   const {error : storageError} = await supabase.storage
-//     .from("cabin-images")
-//     .upload(imageName, cabin.image);
-
-//     if(storageError){
-//       await supabase.from("cabins").delete().eq("id", data.id)
-//       throw new Error("Cabin image could not be uploaded")
-//     }
-// }
