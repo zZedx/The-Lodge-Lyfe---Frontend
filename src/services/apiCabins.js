@@ -23,7 +23,7 @@ export async function createCabin(cabin) {
   newCabin.append("description", cabin.description);
   hasImagePath && newCabin.append("imageName", cabin.imageName);
 
-  const res = await fetch(apiUrl + "/createCabin", {
+  const res = await fetch(apiUrl + "/cabins/create", {
     method: "POST",
     body: newCabin,
   });
@@ -33,7 +33,7 @@ export async function createCabin(cabin) {
 }
 
 export async function deleteCabin(id) {
-  const res = await fetch(apiUrl + "/deleteCabin", {
+  const res = await fetch(apiUrl + "/cabins/delete", {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export async function editCabin(cabin) {
   newCabin.append("imageName", cabin.imageName);
   newCabin.append("_id", cabin._id);
 
-  const res = await fetch(apiUrl + "/editCabin", {
+  const res = await fetch(apiUrl + "/cabins/edit", {
     method: "PUT",
     body: newCabin,
   });
