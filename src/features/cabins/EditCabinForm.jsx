@@ -82,9 +82,13 @@ function EditCabinForm({ cabin, onCloseModal }) {
               defaultValue={0}
               {...register("discount", {
                 required: "This field is required",
-                validate: (value) =>
-                  Number(value) <= getValues().regularPrice ||
-                  "Discount should be less than regular price",
+                validate: {
+                  lessThanRegularPrice: (value) =>
+                    Number(value) <= getValues().regularPrice ||
+                    'Discount should be less than regular price',
+                  greaterThanOrEqualToZero: (value) =>
+                    Number(value) >= 0 || 'Discount should not be less than 0',
+                },
               })}
             />
           </FormRow>
