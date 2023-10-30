@@ -2,10 +2,14 @@ import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import useBookings from "./useBookings";
+import Spinner from '../../ui/Spinner'
+import ServerError from '../../ui/ServerError'
 
 function BookingTable() {
-  const {isLoading , bookings = [], error } = useBookings()
-  
+  const { isLoading, bookings = [], isError } = useBookings()
+
+  if (isLoading) return <Spinner />
+  if (isError) return <ServerError />
 
   return (
     <Menus>
