@@ -4,9 +4,26 @@ import Menus from "../../ui/Menus";
 import useBookings from "./useBookings";
 import Spinner from '../../ui/Spinner'
 import ServerError from '../../ui/ServerError'
+import { useSearchParams } from "react-router-dom";
 
 function BookingTable() {
   const { isLoading, bookings = [], isError } = useBookings()
+  const [searchParams] = useSearchParams()
+  const sortBy = searchParams.get('sortBy') || 'startDate-desc'
+  const [field, value] = sortBy.split("-")
+
+  switch (field) {
+    case "startDate":
+      bookings.sort((a, b) => new Date(a.startDate) - new Date(b.startDate) )
+      break;
+    case "totalPrice":
+      bookings.sort((a, b) => a.totalPrice - b.totalPrice)
+      break;
+    default:
+      break;
+  }
+  value === "asc" ? bookings : bookings.reverse()
+
 
   if (isLoading) return <Spinner />
   if (isError) return <ServerError />
