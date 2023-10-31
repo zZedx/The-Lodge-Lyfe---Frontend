@@ -7,6 +7,8 @@ import ServerError from '../../ui/ServerError'
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../../ui/Pagination";
 
+import { PAGE_SIZE } from "../../utils/constants";
+
 function BookingTable() {
   const { isLoading, bookings = [], isError } = useBookings()
   const [searchParams] = useSearchParams()
@@ -15,19 +17,19 @@ function BookingTable() {
 
   const page = searchParams.get('page') || 1
 
-  const slicedBookings = bookings.slice((page-1)*10 , page*10)
+  const slicedBookings = bookings.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   switch (field) {
     case "startDate":
-      slicedBookings.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+      bookings.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
       break;
     case "totalPrice":
-      slicedBookings.sort((a, b) => a.totalPrice - b.totalPrice)
+      bookings.sort((a, b) => a.totalPrice - b.totalPrice)
       break;
     default:
       break;
   }
-  value === "asc" ? slicedBookings : slicedBookings.reverse()
+  value === "asc" ? bookings : bookings.reverse()
 
 
   if (isLoading) return <Spinner />
@@ -52,7 +54,7 @@ function BookingTable() {
           )}
         />
         <Table.Footer>
-          <Pagination count={bookings.length}/>
+          <Pagination count={bookings.length} />
         </Table.Footer>
       </Table>
     </Menus>
