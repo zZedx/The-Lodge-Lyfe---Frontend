@@ -5,6 +5,7 @@ import useBookings from "./useBookings";
 import Spinner from '../../ui/Spinner'
 import ServerError from '../../ui/ServerError'
 import { useSearchParams } from "react-router-dom";
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
   const { isLoading, bookings = [], isError } = useBookings()
@@ -12,17 +13,21 @@ function BookingTable() {
   const sortBy = searchParams.get('sortBy') || 'startDate-desc'
   const [field, value] = sortBy.split("-")
 
+  const page = searchParams.get('page') || 1
+
+  const slicedBookings = bookings.slice((page-1)*10 , page*10)
+
   switch (field) {
     case "startDate":
-      bookings.sort((a, b) => new Date(a.startDate) - new Date(b.startDate) )
+      slicedBookings.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
       break;
     case "totalPrice":
-      bookings.sort((a, b) => a.totalPrice - b.totalPrice)
+      slicedBookings.sort((a, b) => a.totalPrice - b.totalPrice)
       break;
     default:
       break;
   }
-  value === "asc" ? bookings : bookings.reverse()
+  value === "asc" ? slicedBookings : slicedBookings.reverse()
 
 
   if (isLoading) return <Spinner />
@@ -41,11 +46,14 @@ function BookingTable() {
         </Table.Header>
 
         <Table.Body
-          data={bookings}
+          data={slicedBookings}
           render={(booking) => (
             <BookingRow key={booking._id} booking={booking} />
           )}
         />
+        <Table.Footer>
+          <Pagination count={bookings.length}/>
+        </Table.Footer>
       </Table>
     </Menus>
   );
