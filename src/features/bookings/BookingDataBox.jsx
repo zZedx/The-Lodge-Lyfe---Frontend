@@ -101,7 +101,6 @@ const Footer = styled.footer`
   text-align: right;
 `;
 
-// A purely presentational component
 function BookingDataBox({ booking }) {
   const {
     created_at,
@@ -115,8 +114,8 @@ function BookingDataBox({ booking }) {
     hasBreakfast,
     observations,
     isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
-    cabins: { name: cabinName },
+    guest: { fullName: guestName, email, country, countryFlag, nationalID },
+    cabin: { name: cabinName },
   } = booking;
 
   return (
