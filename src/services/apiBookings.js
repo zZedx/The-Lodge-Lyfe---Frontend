@@ -18,12 +18,13 @@ export async function getBooking(id){
     return data
 }
 
-export async function updateBooking(id){
+export async function updateBooking(id , options){
     const res = await fetch(apiUrl + "/bookings/" + id, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
-        }
+        },
+        body: JSON.stringify(options)
     })
     if(!res.ok){
         throw new Error("An Error Occured While Checking In")
