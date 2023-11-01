@@ -8,3 +8,12 @@ export async function getBookings(filterValue){
     }
     return data
 }
+
+export async function getBooking(bookingId){
+    const res = await fetch(apiUrl + "/bookings/" + bookingId)
+    const data = res.json()
+    if(!res.ok){
+        throw new Error("Error Fetching Data")
+    }
+    return data
+}
