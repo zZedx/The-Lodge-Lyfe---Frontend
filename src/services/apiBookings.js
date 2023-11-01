@@ -27,6 +27,6 @@ export async function updateBooking(id , options){
         body: JSON.stringify(options)
     })
     if(!res.ok){
-        throw new Error("An Error Occured While Checking In")
+        throw new Error("An Error Occured While Updating")
     }
 }
