@@ -9,7 +9,7 @@ const useBooking = () => {
     data: booking,
     isError,
   } = useQuery({
-    queryKey: ["booking"],
+    queryKey: ["booking" , bookingId],
     queryFn: () => getBooking(bookingId),
   });
 
