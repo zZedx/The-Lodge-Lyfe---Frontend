@@ -30,3 +30,12 @@ export async function updateBooking(id , options){
         throw new Error("An Error Occured While Updating")
     }
 }
+
+export async function deleteBooking(id){
+    const res = await fetch(apiUrl + "/bookings/" + id, {
+        method: "DELETE"
+    })
+    if(!res.ok){
+        throw new Error("An Error Occured While Deleting")
+    }
+}
