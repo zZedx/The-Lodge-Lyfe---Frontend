@@ -13,7 +13,7 @@ const FullPage = styled.div`
     align-items: center;
 `
 export const ProtectedRoutes = ({ children }) => {
-    const { isLoading, user, isError } = useUser()
+    const { isLoading, user } = useUser()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -21,7 +21,7 @@ export const ProtectedRoutes = ({ children }) => {
     }, [user, navigate, isLoading])
 
     if (isLoading) return <FullPage><Spinner /></FullPage>
-    if (isError) return <ServerError />
+    // if (isError) return <ServerError />
 
     return children
 }

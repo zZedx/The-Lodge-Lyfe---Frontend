@@ -28,5 +28,8 @@ export async function getCurrentUser() {
         throw new Error(data.message)
     }
     return data
+}
 
+export function logout(){
+    localStorage.removeItem('token')
 }
