@@ -8,7 +8,7 @@ const useLogin = () => {
     const { mutate : login, status} = useMutation({
         mutationFn: ({ email, password }) => loginApi(email, password),
         onSuccess: () => {
-            navigate("/dashboard")
+            navigate("/dashboard" , {replace : true})
         },
         onError: (e) => toast.error(e.message)
     })
