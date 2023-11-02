@@ -9,7 +9,24 @@ export async function login(email, password) {
         body: JSON.stringify({ email, password })
     })
     const data = await res.json()
+    if (!res.ok) {
+        throw new Error(data.message)
+    }
+    localStorage.setItem('token', data.token);
+}
+
+export async function getCurrentUser() {
+    const res = await fetch(`${apiUrl}/users/getUser`, {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('token'),
+            'Content-Type': 'application/json'
+        }
+    })
+    const data = await res.json()
     if(!res.ok){
         throw new Error(data.message)
     }
+    return data
+
 }

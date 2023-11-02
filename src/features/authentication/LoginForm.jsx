@@ -1,20 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import useLogin from "./useLogin";
+import useUser from "./useUser";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+  const {user ,isLoading} = useUser()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const {login , status} = useLogin()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isLoading && user) navigate("/dashboard", { replace: true });
+  }, [user, navigate , isLoading]);
 
   function handleSubmit(e) {
     e.preventDefault()
     if(!email && !password) return 
-    login({email , password})
+    login({email , password} , {
+      onSettled :()=>{
+        setEmail(""),
+        setPassword("")
+      }
+    })
   }
 
   return (
