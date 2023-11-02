@@ -24,6 +24,7 @@ export async function updateBooking(id , options){
         headers: {
             "Content-Type": "application/json"
         },
+        credentials : 'include',
         body: JSON.stringify(options)
     })
     if(!res.ok){
@@ -33,7 +34,8 @@ export async function updateBooking(id , options){
 
 export async function deleteBooking(id){
     const res = await fetch(apiUrl + "/bookings/" + id, {
-        method: "DELETE"
+        method: "DELETE",
+        credentials : 'include'
     })
     if(!res.ok){
         throw new Error("An Error Occured While Deleting")
