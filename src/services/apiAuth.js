@@ -1,6 +1,11 @@
+import Cookies from 'universal-cookie'
+const cookies = new Cookies()
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
+
 export async function login(email, password) {
+    const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000 * 7) // 7 days from now
     const res = await fetch(`${apiUrl}/users/login`, {
         method: 'POST',
         headers: {
@@ -12,24 +17,23 @@ export async function login(email, password) {
     if (!res.ok) {
         throw new Error(data.message)
     }
-    localStorage.setItem('token', data.token);
+    cookies.set('token', data.token, { path: '/' , expires: expirationDate});
+    // localStorage.setItem('token', data.token);
 }
 
 export async function getCurrentUser() {
     const res = await fetch(`${apiUrl}/users/getUser`, {
         method: 'GET',
-        headers: {
-            'Authorization': localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-        }
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'}
     })
     const data = await res.json()
-    if(!res.ok){
+    if (!res.ok) {
         throw new Error(data.message)
     }
     return data
 }
 
-export function logout(){
-    localStorage.removeItem('token')
+export function logout() {
+    cookies.remove('token')
 }
