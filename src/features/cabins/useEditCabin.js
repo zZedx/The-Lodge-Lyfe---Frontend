@@ -12,7 +12,7 @@ const useEditCabin = () => {
           queryClient.invalidateQueries({ queryKey: ["cabins"] });
         },
         onError: (error) => {
-          toast.error(error);
+          toast.error(error.message);
         },
       });
       return {editCabin , status}

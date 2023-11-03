@@ -11,8 +11,8 @@ const useCheckout = () => {
             toast.success("Checked-Out successfully")
             queryClient.invalidateQueries({ active: true })
         },
-        onError: () => {
-            toast.error("Error Checking Out")
+        onError: (e) => {
+            toast.error(e.message)
         }
     })
 

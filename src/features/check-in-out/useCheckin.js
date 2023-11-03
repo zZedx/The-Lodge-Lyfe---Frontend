@@ -14,8 +14,8 @@ const useCheckin = () => {
             queryClient.invalidateQueries({ active: true })
             navigate('/')
         },
-        onError: () => {
-            toast.error("Error Checking In")
+        onError: (e) => {
+            toast.error(e.message)
         }
     })
 
