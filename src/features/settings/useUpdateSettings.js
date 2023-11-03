@@ -11,7 +11,7 @@ const useUpdateSettings = () => {
           queryClient.invalidateQueries({ queryKey: ["settings"] });
         },
         onError: (error) => {
-          toast.error(error);
+          toast.error(error.message);
         },
       });
       return {updateSetting , status}

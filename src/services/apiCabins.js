@@ -1,3 +1,5 @@
+import { throwError } from "../utils/throwError";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function getAllCabins() {
@@ -10,7 +12,6 @@ export async function getAllCabins() {
 }
 
 export async function createCabin(cabin) {
-  console.log(cabin)
   const hasImagePath = cabin.image?.startsWith?.("https://res.cloudinary.com");
   const newCabin = new FormData();
   newCabin.append("image", cabin.image);
@@ -23,10 +24,11 @@ export async function createCabin(cabin) {
 
   const res = await fetch(apiUrl + "/cabins/create", {
     method: "POST",
+    credentials: "include",
     body: newCabin,
   });
   if (!res.ok) {
-    throw new Error("Cabin could not be Created");
+    await throwError(res);
   }
 }
 
@@ -36,10 +38,11 @@ export async function deleteCabin(id) {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify({ id }),
   });
   if (!res.ok) {
-    throw new Error("Cabin could not be deleted");
+    await throwError(res);
   }
 }
 
@@ -58,8 +61,9 @@ export async function editCabin(cabin) {
   const res = await fetch(apiUrl + "/cabins/edit", {
     method: "PUT",
     body: newCabin,
+    credentials: "include",
   });
   if (!res.ok) {
-    throw new Error("Cabin could not be Edited");
+    await throwError(res);
   }
 }

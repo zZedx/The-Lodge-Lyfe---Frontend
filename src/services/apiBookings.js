@@ -1,3 +1,5 @@
+import { throwError } from "../utils/throwError";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function getBookings(filterValue){
@@ -28,7 +30,7 @@ export async function updateBooking(id , options){
         body: JSON.stringify(options)
     })
     if(!res.ok){
-        throw new Error("An Error Occured While Updating")
+        await throwError(res)
     }
 }
 
@@ -38,6 +40,6 @@ export async function deleteBooking(id){
         credentials : 'include'
     })
     if(!res.ok){
-        throw new Error("An Error Occured While Deleting")
+        await throwError(res)
     }
 }

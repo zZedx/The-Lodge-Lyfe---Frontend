@@ -1,3 +1,5 @@
+import { throwError } from "../utils/throwError";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export async function getSettings(){
@@ -16,9 +18,10 @@ export async function updateSettings(setting){
         "Content-Type": "application/json",
       },
       body: JSON.stringify({setting}),
+      credentials: "include",
     });
     if (!res.ok) {
-      throw new Error("Settings could not be updated");
+      await throwError(res);
     }
 }
 
