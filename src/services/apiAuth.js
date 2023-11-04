@@ -50,6 +50,15 @@ export async function getCurrentUser() {
     return data
 }
 
+export async function getAllUsers(query) {
+    const res = await fetch(`${apiUrl}/users/allUsers?users=${query}`)
+    const data = await res.json()
+    if (!res.ok) {
+        throw new Error(data.message)
+    }
+    return data
+}
+
 export function logout() {
     cookies.remove('token')
 }
