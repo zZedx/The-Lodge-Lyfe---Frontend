@@ -31,7 +31,7 @@ function ConfirmModal({ heading, subHeading, onConfirm, disabled, onCloseModal, 
         <Button variation="secondary" disabled={disabled} onClick={onCloseModal}>
           Cancel
         </Button>
-        <Button variation={type} disabled={disabled} onClick={onConfirm}>
+        <Button variation={type} disabled={disabled} onClick={()=>onConfirm(onCloseModal)}>
           {buttonText}
         </Button>
       </div>

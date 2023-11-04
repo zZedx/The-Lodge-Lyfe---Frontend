@@ -1,4 +1,5 @@
 import Cookies from 'universal-cookie'
+import { throwError } from '../utils/throwError';
 const cookies = new Cookies()
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -54,9 +55,32 @@ export async function getAllUsers(query) {
     const res = await fetch(`${apiUrl}/users/allUsers?users=${query}`)
     const data = await res.json()
     if (!res.ok) {
-        throw new Error(data.message)
+        await throwError(res)
     }
     return data
+}
+
+export async function deleteUser(id) {
+    const res = await fetch(`${apiUrl}/users/deleteUser/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'}
+    })
+    if (!res.ok) {
+        await throwError(res)
+    }
+}
+
+export async function updateRole(id , isAdmin) {
+    const res = await fetch(`${apiUrl}/users/updateRole/${id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({isAdmin})
+    })
+    if (!res.ok) {
+        await throwError(res)
+    }
 }
 
 export function logout() {
