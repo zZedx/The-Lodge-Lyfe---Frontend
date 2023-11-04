@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
@@ -6,12 +9,12 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import useLogin from "./useLogin";
 import useUser from "./useUser";
-import { useNavigate } from "react-router-dom";
+import StyledLink from "../../ui/StyledLink";
 
 function LoginForm() {
   const {user ,isLoading} = useUser()
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, formState, handleSubmit , reset} = useForm()
+  const { errors } = formState
   const {login , status} = useLogin()
   const navigate = useNavigate()
 
@@ -19,42 +22,40 @@ function LoginForm() {
     if (!isLoading && user) navigate("/dashboard", { replace: true });
   }, [user, navigate , isLoading]);
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    if(!email && !password) return 
-    login({email , password} , {
+  function onSubmit(data) {
+    login(data , {
       onSettled :()=>{
-        setEmail(""),
-        setPassword("")
+        reset()
       }
     })
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Email address">
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRowVertical label="Email address" error = {errors?.email?.message}>
         <Input
           type="email"
           id="email"
+          defaultValue={"test@gmail.com"}
           // This makes this form better for password managers
           autoComplete="username"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          {...register('email', { required: "This field is required", pattern: { value: /\S+@\S+\.\S+/, message: "Provide a valid email address" } })}
           disabled={status === "pending"}
         />
       </FormRowVertical>
-      <FormRowVertical label="Password">
+      <FormRowVertical label="Password" error = {errors?.password?.message}>
         <Input
           type="password"
           id="password"
+          defaultValue={"test1234"}
           autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          {...register('password', { required: "This field is required" })}
           disabled={status === "pending"}
         />
       </FormRowVertical>
       <FormRowVertical>
         <Button size="large" disabled={status === "pending"}>{status === "pending" ? <SpinnerMini/> : "Login"}</Button>
+        <p>Not registered ? <StyledLink to={"/register"}>create a account</StyledLink></p>
       </FormRowVertical>
     </Form>
   );
