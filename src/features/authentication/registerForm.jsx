@@ -37,7 +37,10 @@ function RegisterForm() {
         <Input
           type="text"
           id="name"
-          {...register('name', { required: "This field is required" })}
+          {...register('name', { required: "This field is required" , maxLength: {
+            value: 14,
+            message: "Username cannot be longer than 14 letters"
+          }})}
           disabled={status === "pending"}
         />
       </FormRowVertical>
