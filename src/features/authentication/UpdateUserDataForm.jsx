@@ -6,6 +6,7 @@ import Input from "../../ui/Input";
 import useUser from "./useUser";
 import { useForm } from "react-hook-form";
 import useUpdateUser from "./useUpdateUser";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 function UpdateUserDataForm() {
   const { user } = useUser()
@@ -93,7 +94,7 @@ function UpdateUserDataForm() {
         <Button variation="secondary" disabled={status === "pending"} onClick={handleCancel}>
           Cancel
         </Button>
-        <Button disabled={status === "pending"}>Update account</Button>
+        <Button disabled={status === "pending"}>{status === "pending" ? <SpinnerMini /> : "Update Account"}</Button>
       </FormRow>
     </Form>
   );

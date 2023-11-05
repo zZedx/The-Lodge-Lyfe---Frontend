@@ -17,10 +17,14 @@ const Name = styled.div`
 `;
 
 const Img = styled.img`
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-`
+  display: block;
+  width: 4rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  outline: 2px solid var(--color-grey-100);
+`;
 
 function UserRow({ user }) {
     const {
