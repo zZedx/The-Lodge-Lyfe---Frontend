@@ -41,14 +41,14 @@ function UserRow({ user }) {
 
     function makeAdmin(onCloseModal) {
         updateRole({ id: userId, isAdmin: true }, {
-            onSuccess: () => {
+            onSettled: () => {
                 onCloseModal?.();
             },
         })
     }
     function removeAdmin(onCloseModal) {
         updateRole({ id: userId, isAdmin: false }, {
-            onSuccess: () => {
+            onSettled: () => {
                 onCloseModal?.();
             },
         })
