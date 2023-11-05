@@ -51,7 +51,7 @@ export default function App() {
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
-      <Toaster position="top-right" gutter={12} containerStyle={{ margin: "8px" }} toastOptions={{
+      <Toaster position="top-center" gutter={12} containerStyle={{ margin: "8px" }} toastOptions={{
         success: {
           duration: 3000,
         },
