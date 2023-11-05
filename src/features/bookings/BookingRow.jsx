@@ -65,6 +65,12 @@ function BookingRow({ booking }) {
     "checked-out": "silver",
   };
 
+  function onDeleteBooking(onCloseModal){
+    deleteBooking(bookingId , {
+      onSettled : onCloseModal
+    })
+  }
+
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -113,7 +119,7 @@ function BookingRow({ booking }) {
           <Modal.Window name={"delete"}>
             <ConfirmDelete
               resourceName={"booking"}
-              onConfirm={() => deleteBooking(bookingId)}
+              onConfirm={onDeleteBooking}
               disabled={deleteStatus === "pending"}
             ></ConfirmDelete>
           </Modal.Window>

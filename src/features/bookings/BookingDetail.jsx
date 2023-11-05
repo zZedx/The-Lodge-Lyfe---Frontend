@@ -42,6 +42,13 @@ function BookingDetail() {
 
   const { _id: bookingId, status } = booking
 
+  function onDeleteBooking(onCloseModal){
+    deleteBooking(bookingId , {
+      onSuccess:()=> navigate(-1),
+      onSettled:onCloseModal
+    })
+  }
+
   return (
     <>
       <Row type="horizontal">
@@ -64,9 +71,7 @@ function BookingDetail() {
           <Modal.Window name={"delete"}>
             <ConfirmDelete
               resourceName={"booking"}
-              onConfirm={() => deleteBooking(bookingId , {
-                onSettled:()=> navigate(-1)
-              })}
+              onConfirm={onDeleteBooking}
               disabled={deleteStatus === "pending"}
             ></ConfirmDelete>
           </Modal.Window>
