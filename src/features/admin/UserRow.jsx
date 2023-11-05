@@ -54,6 +54,12 @@ function UserRow({ user }) {
         })
     }
 
+    function onDeleteUser(onCloseModal){
+        deleteUser(userId , {
+            onSettled : onCloseModal
+        })
+    }
+
     return (
         <Table.Row>
             <Img src={profilePic} alt="" />
@@ -83,7 +89,7 @@ function UserRow({ user }) {
                     <Modal.Window name={"delete"}>
                         <ConfirmDelete
                             resourceName={"user"}
-                            onConfirm={() => deleteUser(userId)}
+                            onConfirm={onDeleteUser}
                             disabled={deleteStatus === "pending"}
                         ></ConfirmDelete>
                     </Modal.Window>
