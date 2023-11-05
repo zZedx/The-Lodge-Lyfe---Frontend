@@ -12,7 +12,7 @@ export async function login(email, password) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email : email.toLowerCase(), password })
     })
     const data = await res.json()
     if (!res.ok) {
@@ -29,7 +29,7 @@ export async function register(email, password , name) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password , name})
+        body: JSON.stringify({ email : email.toLowerCase(), password , name})
     })
     const data = await res.json()
     if (!res.ok) {
@@ -82,6 +82,27 @@ export async function updateRole(id , isAdmin) {
         await throwError(res)
     }
 }
+
+export async function updateCurrentUser(user) {
+    const hasImagePath = user.profilePic?.startsWith?.("https://res.cloudinary.com");
+    const newUser = new FormData();
+    newUser.append("profilePic", hasImagePath ? user.profilePic : user.profilePic[0]);
+    newUser.append("name", user.name);
+    newUser.append("oldPassword", user.oldPassword);
+    newUser.append("password", user.password);
+    newUser.append("imageName", user.imageName);
+  
+    const res = await fetch(apiUrl + "/users/updateUser", {
+      method: "PATCH",
+      body: newUser,
+      credentials: "include",
+    });
+    if (!res.ok) {
+      await throwError(res);
+    }
+    const data = await res.json();
+    return data;
+  }
 
 export function logout() {
     cookies.remove('token')

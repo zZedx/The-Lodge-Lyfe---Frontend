@@ -16,7 +16,7 @@ export const ProtectedRoutes = ({ children }) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!user && !isLoading) navigate('/login')
+        if (!isLoading && !user ) navigate('/login')
     }, [user, navigate, isLoading])
 
     if (isLoading) return <FullPage><Spinner /></FullPage>
