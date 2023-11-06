@@ -5,7 +5,6 @@ const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000 * 7) // 7 days 
 const cookies = new Cookies({ path: '/' , expires: expirationDate , httpOnly: true , sameSite: 'none'})
 
 const apiUrl = import.meta.env.VITE_API_URL;
-console.log(apiUrl)
 
 export async function checkStatus() {
     const res = await fetch(`${apiUrl}/status`)
@@ -56,7 +55,6 @@ export async function getCurrentUser() {
     })
     const data = await res.json()
     if (!res.ok) {
-        console.log(data)
         throw new Error(data.message)
     }
     return data
