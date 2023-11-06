@@ -61,3 +61,12 @@ export async function getStaysAfterDate(date){
     }
     return data
 }
+
+export async function getStaysTodayActivity(){
+    const res = fetch(apiUrl + "/bookings/staysTodayActivity")
+    const data = res.json()
+    if(!res.ok){
+        await throwError(res)
+    }
+    return data
+}
