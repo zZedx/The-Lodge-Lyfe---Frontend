@@ -5,6 +5,7 @@ import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import ServerError from "../../ui/ServerError";
 import useCabins from "../cabins/useCabins";
+import SalesChart from "./SalesChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -25,6 +26,7 @@ const DashboardLayout = () => {
 
   return <StyledDashboardLayout>
     <Stats bookings={bookings} confirmedStays={confirmedStays} numDays={numDays} cabinCount={cabins.length} />
+    <SalesChart bookings={bookings} numDays={numDays}/>
   </StyledDashboardLayout>
 }
 
