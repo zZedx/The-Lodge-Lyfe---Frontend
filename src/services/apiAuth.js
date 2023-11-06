@@ -53,6 +53,7 @@ export async function getCurrentUser() {
     })
     const data = await res.json()
     if (!res.ok) {
+        console.log(data)
         throw new Error(data.message)
     }
     return data
