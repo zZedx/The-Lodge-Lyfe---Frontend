@@ -1,6 +1,6 @@
 # Cabin Booking Dashboard
 
-This is a cabin booking dashboard application built using the MERN stack (MongoDB, Express.js, React.js, Node.js).
+This repository contains the frontend code for the Cabin Booking Dashboard, a modern web application built using React.js.
 
 ## Features
 
