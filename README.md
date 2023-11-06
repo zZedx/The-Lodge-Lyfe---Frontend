@@ -30,4 +30,4 @@ A step by step series of examples that tell you how to get a development environ
 
 ## Contributing
 
-Any contributions you make are greatly appreciated.
+Any contributions you make are greatly appreciated .
