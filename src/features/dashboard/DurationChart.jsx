@@ -1,11 +1,13 @@
 import styled from "styled-components";
+import Heading from "../../ui/Heading";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
-
   padding: 2.4rem 3.2rem;
   grid-column: 3 / span 2;
 
@@ -105,8 +107,6 @@ const startDataDark = [
 ];
 
 function prepareData(startData, stays) {
-  // A bit ugly code, but sometimes this is what it takes when working with real data 😅
-
   function incArrayValue(arr, field) {
     return arr.map((obj) =>
       obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
@@ -130,3 +130,25 @@ function prepareData(startData, stays) {
 
   return data;
 }
+
+
+const DurationChart = ({confirmedStays}) => {
+  const {isDarkMode} = useDarkMode()
+  const startData = isDarkMode ? startDataDark : startDataLight
+  const data = prepareData(startData, confirmedStays)
+  return (
+    <ChartBox>
+      <Heading as={"h2"}>Stay duration summary</Heading>
+      <ResponsiveContainer height={240} width={"100%"}>
+        <PieChart>
+          <Pie data={data} nameKey={"duration"} dataKey={"value"} innerRadius={85} outerRadius={110} paddingAngle={3} cx={"40%"} cy={"50%"}>
+            {data.map((entry, index) => ( <Cell key={`cell-${index}`} fill={entry.color} /> ))}
+          </Pie>
+          <Legend verticalAlign="middle" align="right" width={"30%"} layout="vertical" iconSize={15} iconType="circle"/>
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartBox>
+  )
+}
+
+export default DurationChart
