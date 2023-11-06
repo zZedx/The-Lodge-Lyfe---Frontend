@@ -43,3 +43,21 @@ export async function deleteBooking(id){
         await throwError(res)
     }
 }
+
+export async function getBookingsAfterDate(date){
+    const res = await fetch(apiUrl + "/bookings/bookingsAfterDate?date=" + date)
+    const data = res.json()
+    if(!res.ok){
+        await throwError(res)
+    }
+    return data
+}
+
+export async function getStaysAfterDate(date){
+    const res = await fetch(apiUrl + "/bookings/staysAfterDate?date=" + date)
+    const data = res.json()
+    if(!res.ok){
+        await throwError(res)
+    }
+    return data
+}
