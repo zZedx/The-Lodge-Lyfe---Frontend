@@ -4,6 +4,12 @@ const cookies = new Cookies()
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+export async function checkStatus() {
+    const res = await fetch(`${apiUrl}/status`)
+    if (!res.ok) {
+        await throwError(res)
+    }
+}
 
 export async function login(email, password) {
     const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000 * 7) // 7 days from now
