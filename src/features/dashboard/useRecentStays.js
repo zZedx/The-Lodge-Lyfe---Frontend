@@ -13,7 +13,7 @@ const useRecentBookings = () => {
     })
 
     const confirmedStays = stays?.filter(stay => stay.status === "checked-in" || stay.status === "checked-out")
-    return { stays, confirmedStays,  isLoading, isError }
+    return { stays, confirmedStays,  isLoading, isError , query}
 }
 
 export default useRecentBookings
