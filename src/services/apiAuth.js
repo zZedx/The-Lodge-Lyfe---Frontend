@@ -1,6 +1,8 @@
 import Cookies from 'universal-cookie'
 import { throwError } from '../utils/throwError';
-const cookies = new Cookies()
+// const cookies = new Cookies()
+const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000 * 7) // 7 days from now
+const cookies = new Cookies({ path: '/' , expires: expirationDate , httpOnly: true , sameSite: 'none'})
 
 const apiUrl = import.meta.env.VITE_API_URL;
 console.log(apiUrl)
@@ -25,7 +27,8 @@ export async function login(email, password) {
     if (!res.ok) {
         throw new Error(data.message)
     }
-    cookies.set('token', data.token, { path: '/' , expires: expirationDate});
+    // cookies.set('token', data.token, { path: '/' , expires: expirationDate});
+    cookies.set('token' , data.token)
     // localStorage.setItem('token', data.token);
 }
 
