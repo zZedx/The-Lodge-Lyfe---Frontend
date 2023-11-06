@@ -3,6 +3,7 @@ import { throwError } from '../utils/throwError';
 const cookies = new Cookies()
 
 const apiUrl = import.meta.env.VITE_API_URL;
+console.log(apiUrl)
 
 export async function checkStatus() {
     const res = await fetch(`${apiUrl}/status`)
