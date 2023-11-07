@@ -1,4 +1,5 @@
 import { throwError } from "../utils/throwError";
+import { getToken } from "./apiAuth";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -12,13 +13,12 @@ export async function getSettings(){
 }
 
 export async function updateSettings(setting){
+    const token = getToken();
     const res = await fetch(apiUrl + "/settings/update", {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`},
       body: JSON.stringify({setting}),
-      credentials: "include",
     });
     if (!res.ok) {
       await throwError(res);

@@ -1,4 +1,5 @@
 import { throwError } from "../utils/throwError";
+import { getToken } from "./apiAuth";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -12,6 +13,7 @@ export async function getAllCabins() {
 }
 
 export async function createCabin(cabin) {
+  const token = getToken();
   const hasImagePath = cabin.image?.startsWith?.("https://res.cloudinary.com");
   const newCabin = new FormData();
   newCabin.append("image", cabin.image);
@@ -25,6 +27,7 @@ export async function createCabin(cabin) {
   const res = await fetch(apiUrl + "/cabins/create", {
     method: "POST",
     credentials: "include",
+    headers: {'Authorization': `Bearer ${token}`},
     body: newCabin,
   });
   if (!res.ok) {
@@ -33,12 +36,11 @@ export async function createCabin(cabin) {
 }
 
 export async function deleteCabin(id) {
+  const token = getToken();
   const res = await fetch(apiUrl + "/cabins/delete", {
     method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
+    headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`},
     body: JSON.stringify({ id }),
   });
   if (!res.ok) {
@@ -47,6 +49,7 @@ export async function deleteCabin(id) {
 }
 
 export async function editCabin(cabin) {
+  const token = getToken();
   const hasImagePath = cabin.image?.startsWith?.("https://res.cloudinary.com");
   const newCabin = new FormData();
   newCabin.append("image", hasImagePath ? cabin.image : cabin.image[0]);
@@ -61,7 +64,7 @@ export async function editCabin(cabin) {
   const res = await fetch(apiUrl + "/cabins/edit", {
     method: "PUT",
     body: newCabin,
-    credentials: "include",
+    headers: {'Authorization': `Bearer ${token}`},
   });
   if (!res.ok) {
     await throwError(res);

@@ -5,6 +5,10 @@ const expirationDate = new Date(Date.now() + 24 * 60 * 60 * 1000 * 7) // 7 days 
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+export function getToken() {
+    return cookies.get('token')
+}
+
 export async function checkStatus() {
     const res = await fetch(`${apiUrl}/status`)
     if (!res.ok) {
@@ -45,11 +49,12 @@ export async function register(email, password , name) {
 }
 
 export async function getCurrentUser() {
+    const token = getToken()
     const res = await fetch(`${apiUrl}/users/getUser`, {
         method: 'GET',
         // credentials: 'include',
         headers: {'Content-Type': 'application/json' , 
-        'Authorization': `Bearer ${cookies.get('token')}`}
+        'Authorization': `Bearer ${token}`}
     })
     const data = await res.json()
     if (!res.ok) {
@@ -68,10 +73,11 @@ export async function getAllUsers(query) {
 }
 
 export async function deleteUser(id) {
+    const token = getToken()
     const res = await fetch(`${apiUrl}/users/deleteUser/${id}`, {
         method: 'DELETE',
-        credentials: 'include',
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`}
     })
     if (!res.ok) {
         await throwError(res)
@@ -79,10 +85,11 @@ export async function deleteUser(id) {
 }
 
 export async function updateRole(id , isAdmin) {
+    const token = getToken()
     const res = await fetch(`${apiUrl}/users/updateRole/${id}`, {
         method: 'PATCH',
-        credentials: 'include',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`},
         body: JSON.stringify({isAdmin})
     })
     if (!res.ok) {
@@ -91,6 +98,7 @@ export async function updateRole(id , isAdmin) {
 }
 
 export async function updateCurrentUser(user) {
+    const token = getToken()
     const hasImagePath = user.profilePic?.startsWith?.("https://res.cloudinary.com");
     const newUser = new FormData();
     newUser.append("profilePic", hasImagePath ? user.profilePic : user.profilePic[0]);
@@ -102,7 +110,7 @@ export async function updateCurrentUser(user) {
     const res = await fetch(apiUrl + "/users/updateUser", {
       method: "PATCH",
       body: newUser,
-      credentials: "include",
+      headers: {'Authorization': `Bearer ${token}`},
     });
     if (!res.ok) {
       await throwError(res);

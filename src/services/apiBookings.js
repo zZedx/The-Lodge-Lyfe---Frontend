@@ -1,4 +1,5 @@
 import { throwError } from "../utils/throwError";
+import { getToken } from "./apiAuth";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -21,12 +22,11 @@ export async function getBooking(id){
 }
 
 export async function updateBooking(id , options){
+    const token = getToken()
     const res = await fetch(apiUrl + "/bookings/" + id, {
         method: "PATCH",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        credentials : 'include',
+        headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`},
         body: JSON.stringify(options)
     })
     if(!res.ok){
@@ -35,9 +35,11 @@ export async function updateBooking(id , options){
 }
 
 export async function deleteBooking(id){
+    const token = getToken()
     const res = await fetch(apiUrl + "/bookings/" + id, {
         method: "DELETE",
-        credentials : 'include'
+        headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${token}`},
     })
     if(!res.ok){
         await throwError(res)
