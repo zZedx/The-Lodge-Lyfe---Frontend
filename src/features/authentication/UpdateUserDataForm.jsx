@@ -18,7 +18,8 @@ function UpdateUserDataForm() {
 
   function onSubmit(data) {
     updateUser(data, {
-      onSettled: (updatedUser) => { reset({ name: updatedUser.name, email: updatedUser.email, profilePic: updatedUser.profilePic }) }
+      onSucess: (updatedUser) => { reset({ name: updatedUser.name, email: updatedUser.email, profilePic: updatedUser.profilePic }) },
+      onError: () => reset({ name: user.name, email: user.email, profilePic: user.profilePic }),
     })
   }
 
