@@ -58,6 +58,7 @@ export async function getCurrentUser() {
 }
 
 export async function getAllUsers(query) {
+    console.log(cookies.get('token'))
     const res = await fetch(`${apiUrl}/users/allUsers?users=${query}`)
     const data = await res.json()
     if (!res.ok) {
