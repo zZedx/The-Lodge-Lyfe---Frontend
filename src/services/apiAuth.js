@@ -45,11 +45,11 @@ export async function register(email, password , name) {
 }
 
 export async function getCurrentUser() {
-    console.log(cookies.get('token'))
     const res = await fetch(`${apiUrl}/users/getUser`, {
         method: 'GET',
-        credentials: 'include',
-        headers: {'Content-Type': 'application/json'}
+        // credentials: 'include',
+        headers: {'Content-Type': 'application/json' , 
+        'Authorization': `Bearer ${cookies.get('token')}`}
     })
     const data = await res.json()
     if (!res.ok) {
