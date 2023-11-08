@@ -19,13 +19,13 @@ function UpdateUserDataForm() {
   function onSubmit(data) {
     updateUser(data, {
       onSucess: (updatedUser) => { reset({ name: updatedUser.name, email: updatedUser.email, profilePic: updatedUser.profilePic }) },
-      onError: () => reset({ name: user.name, email: user.email, profilePic: user.profilePic }),
+      onError: () => reset({ name: user.name, email: user.email, profilePic: user.profilePic , oldPassword : '' , newPassword : '' , password : ''}),
     })
   }
 
   function handleCancel(e){
     e.preventDefault()
-    reset({...user})
+    reset({...user , oldPassword : '' , newPassword : '' , password : ''})
   }
 
   return (
@@ -92,7 +92,7 @@ function UpdateUserDataForm() {
         />
       </FormRow>
       <FormRow>
-        <Button variation="secondary" disabled={status === "pending"} onClick={handleCancel}>
+        <Button variation="secondary" type="button" disabled={status === "pending"} onClick={handleCancel}>
           Cancel
         </Button>
         <Button disabled={status === "pending"}>{status === "pending" ? <SpinnerMini /> : "Update Account"}</Button>
