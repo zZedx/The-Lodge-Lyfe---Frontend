@@ -44,7 +44,7 @@ const ServerStatus = () => {
     <StyledServerStatus type={isLoading ? "error" : "success"} darkMode = {isDarkMode}>
       {isLoading ? (
         <>
-          <span>😕 Server is Loading. Please Wait..</span>
+          <span>😕 Server is Loading. Please Wait. This might take a few minutes.</span>
           <SpinnerMini />
         </>
       ) : (

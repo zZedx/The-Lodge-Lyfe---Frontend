@@ -20,7 +20,7 @@ export const ProtectedRoutes = ({ children }) => {
         if (!isLoading && !user ) navigate('/login')
     }, [user, navigate, isLoading])
 
-    if (isLoading) return <FullPage><ServerStatus><Spinner /></ServerStatus></FullPage>
+    if (isLoading) return <FullPage><ServerStatus /><Spinner /></FullPage>
     // if (isError) return <ServerError />
 
     return children
