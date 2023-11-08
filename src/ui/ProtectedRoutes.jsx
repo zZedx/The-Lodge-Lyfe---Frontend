@@ -3,6 +3,7 @@ import styled from "styled-components"
 import useUser from "../features/authentication/useUser"
 import Spinner from "./Spinner"
 import { useNavigate } from "react-router-dom"
+import ServerStatus from "./ServerStatus"
 
 const FullPage = styled.div`
     height: 100vh;
@@ -19,7 +20,7 @@ export const ProtectedRoutes = ({ children }) => {
         if (!isLoading && !user ) navigate('/login')
     }, [user, navigate, isLoading])
 
-    if (isLoading) return <FullPage><Spinner /></FullPage>
+    if (isLoading) return <FullPage><ServerStatus><Spinner /></ServerStatus></FullPage>
     // if (isError) return <ServerError />
 
     return children
