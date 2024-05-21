@@ -116,12 +116,15 @@ export async function updateCurrentUser(user) {
   return data;
 }
 
-export function logout() {
-  fetch(`${apiUrl}/users/logout`, {
+export async function logout() {
+  const res = await fetch(`${apiUrl}/users/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
   });
+  if (!res.ok) {
+    await throwError(res);
+  }
 }
